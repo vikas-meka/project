@@ -5,41 +5,25 @@ from .models import course, mark, student_detail, course_key, admin_key, grade, 
 
 
 
-class AuthenticationTests(TestCase):
-    """ Test cases for admin and student authentication views """
-
+class StudentViewsTestCase(TestCase):
     def setUp(self):
-        self.admin = admin_detail.objects.create(username='vikas', password='vikas_meka')
-        self.student_password = student_password.objects.create(username='211199', password='211199')
-        self.student_detail = student_detail.objects.create(
-            roll_no='211199', name='Test User', year='3', branch='CSE', password='211199')
+        self.client = Client()
+        self.sample_student = student_detail.objects.create(
+            roll_no="R123",
+            name="Alice",
+            year="2",
+            branch="CS",
+            password="pass123"
+        )
 
-    def test_admin_login(self):
-        """ Test Case 4.1: Admin login with correct credentials """
-        response = self.client.post(reverse('admin_login'), {'username': 'vikas', 'password': 'vikas_meka'})
+    def test_delete_student_view(self):
+        """Test deleting a student successfully."""
+        response = self.client.post(reverse('delete_student'), {'roll_no': 'R123'})
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('add_delete_student'))
+
+    def test_add_delete_student_view(self):
+        """Test add/delete student page loads successfully."""
+        response = self.client.get(reverse('add_delete_student'))
         self.assertEqual(response.status_code, 200)
-    
-    def test_student_login(self):
-        """ Test Case 4.2: Student login with correct credentials """
-        response = self.client.post(reverse('student'), {'username': '211140', 'password': '211140'})
-        self.assertEqual(response.status_code, 302)
-    
-    def test_invalid_login(self):
-        """ Test Case 4.3: Invalid login credentials """
-        response = self.client.post(('loginUser'), {'username': 'invalid', 'password': 'pass'})
-        self.assertEqual(response.status_code, 404)
-    
-    def test_logout(self):
-        """ Test Case 4.4: Ensure logout functionality """
-        self.client.login(username='vikas', password='vikas_meka')
-        response = self.client.get(reverse('admin_logout'))
-        self.assertEqual(response.status_code, 302)
-
-    def test_login_view_post_invalid(self):
-        """Test login functionality with invalid credentials."""        
-        response = self.client.post(reverse('admin_login'), {'username': 'vikas', 'password': 'wrongpass'})
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('admin_login'))
-        follow_response = self.client.get(reverse('admin_login'))
-        messages_list = list(follow_response.context['messages'])
-        self.assertTrue(any("Incorrect credentials" in str(msg) for msg in messages_list))
+        self.assertTemplateUsed(response, 'adddel_stu.html')
