@@ -64,7 +64,7 @@ name: Test
 on:
   push:
     branches:
-      - main  # adjust as needed
+      - master  # adjust as needed
 
 jobs:
   test:
