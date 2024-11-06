@@ -3,33 +3,25 @@ from home import views
 from django.urls import reverse
 from .models import course, mark, student_detail, course_key, admin_key, grade, admin_detail, student_password
 
-class CourseModelTests(TestCase):
-    """ Test cases related to the course model """
+class StudentDetailModelTests(TestCase):
+    """ Test cases for student_detail model """
 
     def setUp(self):
-        # Setting up a course instance for testing
-        self.course = course.objects.create(
-            username='course_user1', password='password123', course1='CS101',
-            credits=3, year='2', branch='CSE', name='Data Structures', teacher='Prof. Smith'
+        self.student = student_detail.objects.create(
+            roll_no='ST001', name='John Doe', year='3', branch='ECE', password='mypassword'
         )
 
-    def test_course_creation(self):
-        """ Test Case 1.1: Verify course creation """
-        self.assertEqual(course.objects.count(), 1)
-        self.assertEqual(self.course.course1, 'CS101')
-    
-    def test_course_primary_key_uniqueness(self):
-        """ Test Case 1.2: Ensure unique primary key for course """
+    def test_student_creation(self):
+        """ Test Case 2.1: Verify student creation """
+        self.assertEqual(student_detail.objects.count(), 1)
+        self.assertEqual(self.student.roll_no, 'ST001')
+
+    def test_duplicate_roll_no(self):
+        """ Test Case 2.2: Ensure unique roll_no """
         with self.assertRaises(Exception):
-            course.objects.create(course1='CS101')  # Duplicate primary key
+            student_detail.objects.create(roll_no='ST001')  # Duplicate roll number
     
-    def test_course_string_representation(self):
-        """ Test Case 1.3: Verify __str__ representation """
-        self.assertEqual(str(self.course), 'course_user1')
-
-    def test_course_with_null_optional_fields(self):
-        """ Test Case 1.4: Create a course with null optional fields """
-        course_with_nulls = course.objects.create(
-            username='course_user2', course1='CS102', credits=None, year=None, branch=None
-        )
-        self.assertIsNone(course_with_nulls.credits)
+    def test_student_string_representation(self):
+        """ Test Case 2.3: Verify __str__ method """
+        self.assertEqual(str(self.student), 'ST001')
+    
