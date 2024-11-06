@@ -1,0 +1,38 @@
+from django.contrib import admin
+from django.urls import path, include
+from home import views
+
+urlpatterns = [ 
+    path('',views.index, name="index"),
+    path('login',views.loginUser, name="login"),
+    path('random',views.random_function, name="random"),
+    path('clear',views.clear, name="clear"),
+    path('student',views.student, name="student"),
+    path('exit_home',views.exit_home, name="exit"),
+    path('faculty_dashboard',views.faculty_dashboard, name="faculty_dashboard"),
+    path('admin_dashboard',views.admin_dashboard, name="admin_dashboard"),
+    path('exit_faculty',views.exit_faculty, name="exit"),
+    path('admin_login',views.admin_login, name="admin_login"),
+    path('admin_logout',views.admin_logout, name="admin_logout"),
+    path('teacher_logout',views.teacher_logout, name="logout"),
+    path('mark_list',views.mark_list, name="marks"),
+    path('teacher', views.teacher, name="teacher"),
+    path('adm', views.adm, name="admin"),
+    # path('student_login',views.student_login, name="login"),
+    # path('student_logout',views.student_logout, name="logout"),
+    path('marking',views.marking, name="marking"),
+    path('markingman',views.markingman, name="marking"),
+    path('calculate',views.calculate, name="calculate"),
+    path('add_student',views.add_student, name="add_student"),
+    path('add_studentman',views.add_studentman, name="add_studentman"),
+    path('delete_student',views.delete_student, name="delete_student"),
+    path('add_delete_student',views.add_delete_student, name="add_delete_student"),
+    path('add_delete_course',views.add_delete_course, name="add_delete_course"),
+    path('add_course',views.add_course, name="add_course"),
+    path('add_courseman',views.add_courseman, name="add_courseman"),
+    path('delete_course',views.delete_course, name="delete_course"),    
+    path('administrator',views.admin, name="admin"),
+    path('change_pwd',views.change_pwd, name="change password"),
+    path('logout/',views.logoutUser, name="logout"),
+   # path('tea_login',views.tea_login, name="Teacherlogin"),
+]

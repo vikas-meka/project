@@ -1,0 +1,138 @@
+{% extends "teacher.html" %}
+{% load static %}
+
+{% block style %}
+
+.container {
+    display: flex;
+    justify-content: space-between; /* Align items with space between them */
+    color: white;
+}
+
+.hform {
+    width: 45%; /* Adjust the width as needed */
+}
+
+.hitems {
+ /* Adjust margin between forms */
+    border-radius:10px;
+    box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.3);
+    background-color: white;
+    padding:20px;
+    color:black;
+}
+
+#div1{
+    
+}
+
+#div2{
+    dispaly:flex;
+    justify-content:center;
+    align-items:center;
+    height:150px;
+    width:250px;
+    margin-right:250px;
+    margin-top:150px;
+}
+
+
+label{
+    color:#212529;
+    font-family: 'Poppins', sans-serif;
+}
+
+input{
+    padding:6px;
+    max-height:10px;
+    outline:none;
+    border-radius:10px;
+}
+
+.input{
+    display: flex;
+    gap : 10px;
+    align-items:center;
+    width:300px;
+
+    <!-- border:2px solid red; -->
+}
+
+.input  label{
+    width:100px;
+}
+
+
+.button{
+    background-color:#051D40; 
+    color:white;
+    padding : 6px 10px;
+    margin-left: 110px;
+    margin-top:10px;
+    border-radius:6px;  
+
+}
+
+{% endblock %}
+
+{% block heading %} <h1 id="heading">Marks Entry</h1> {% endblock %}
+{% block name %}<h2 id="name">{{ name }}</h2>{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages" class='notification'>
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }} alert alert-warning"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="container">
+    <div id="div1" class="hitems text-center" style="margin-left:300px; margin-top: 100px;">
+        <form class="form-signin hform" method="post" action="/markingman">
+            {% csrf_token %}
+            
+         <div class="input">
+             <label for="inputEmail1" class="sr-only mt-2"><strong><h5>Roll No</strong></h5></label>
+             <input type="text" id="inputEmail1" name="roll_number" class="form-control" placeholder="ROLL NUMBER" required autofocus>
+         </div>
+         <div class="input">
+
+             <label for="inputEmail2" class="sr-only mt-2"><strong><h5>CT1</strong></h5></label>
+             <input max="20.0" type="number" id="inputEmail2" name="CT1" class="form-control" placeholder="CT1" required autofocus>
+         </div>
+         <div class="input">
+             <label for="inputEmail3" class="sr-only mt-2"><strong><h5>CT2</strong></h5></label>
+             <input max="20.0" type="number" id="inputEmail3" name="CT2" class="form-control" placeholder="CT2" required autofocus>
+
+         </div>
+         <div class="input">
+             <label for="inputEmail4" class="sr-only mt-2"><strong><h5>END</strong></h5></label>
+             <input max="50.0" type="number" id="inputEmail4" name="END" class="form-control" placeholder="END" required autofocus>     
+
+         </div>
+         <div class="input">
+             <label for="inputEmail5" class="sr-only mt-2"><strong><h5>INTERNALS</strong></h5></label>
+            
+             <input max="10.0" type="number" id="inputEmail5" name="INTERNALS" class="form-control" placeholder="INTERNALS" required autofocus> 
+         </div>
+ 
+            <!-- <button class="  " style="width: 100%; background-color:#051D40; color:white;" type="submit">ENTER</button> -->
+            <button class="button">Enter</button>
+        </form>
+    </div>
+
+    <div id="div2" class="hitems text-center" style="margin-top:200px;">
+        <form class="form-signin hform" method="post" action="/marking" enctype="multipart/form-data">
+            {% csrf_token %}
+    
+            <label for="fileInput" class="sr-only mt-2"><strong><h5>Upload Excel File</strong></h5></label>
+            <input type="file" id="fileInput" name="excel_file" class="form-control-file" accept=".xlsx, .xls" required>
+    
+            <button class="btn btn-lg btn-block m-3" style="margin-left:70px; margin-top:20px; background-color:#051D40; color:white;" type="submit">UPLOAD</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
