@@ -5,25 +5,28 @@ from .models import course, mark, student_detail, course_key, admin_key, grade, 
 
 
 
-class StudentViewsTestCase(TestCase):
+class CourseViewsTestCase(TestCase):
     def setUp(self):
         self.client = Client()
-        self.sample_student = student_detail.objects.create(
-            roll_no="R123",
-            name="Alice",
-            year="2",
+        self.sample_course = course.objects.create(
+            username="teacher1",
+            password="password123",
+            course1="CS101",
+            credits=3,
+            year="1",
             branch="CS",
-            password="pass123"
+            name="Computer Science",
+            teacher="Dr. Smith"
         )
 
-    def test_delete_student_view(self):
-        """Test deleting a student successfully."""
-        response = self.client.post(reverse('delete_student'), {'roll_no': 'R123'})
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('add_delete_student'))
-
-    def test_add_delete_student_view(self):
-        """Test add/delete student page loads successfully."""
-        response = self.client.get(reverse('add_delete_student'))
+    def test_add_delete_course_view(self):
+        """Test add/delete course page loads successfully."""
+        response = self.client.get(reverse('add_delete_course'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'adddel_stu.html')
+        self.assertTemplateUsed(response, 'adddel_cou.html')
+    
+    def test_delete_course_view(self):
+        """Test deleting a course."""
+        response = self.client.post(reverse('delete_course'), {'course1': 'CS101'})
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('add_delete_course'))
